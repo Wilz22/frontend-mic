@@ -34,6 +34,8 @@ const LoginPage = () => {
             const result = await response.json();
             if (response.ok && result.data?.access_token) {
                 localStorage.setItem('access_token', result.data.access_token);
+                localStorage.setItem('user_email', email);
+                localStorage.setItem('user_type', result.data.role); // <-- Guarda el rol
                 toast.current?.show({
                     severity: 'success',
                     summary: '¡Ingreso exitoso!',

@@ -47,6 +47,10 @@ const Crud = () => {
     const toast = useRef<Toast>(null);
     const dt = useRef(null);
 
+    const userEmail = typeof window !== 'undefined' ? localStorage.getItem('user_email') ?? '' : '';
+    const viewOnlyEmails = ['admin@app.com', 'dev@app.com', 'supervisor@app.com'];
+    const isViewOnly = viewOnlyEmails.includes(userEmail);
+
     useEffect(() => {
         (async () => {
             try {
@@ -243,10 +247,11 @@ const Crud = () => {
                     <Toolbar
                         className="mb-4"
                         left={
-                            <div className="my-2">
-                                {/* <Button label="Nuevo" icon="pi pi-plus" severity="success" className=" mr-2" onClick={openNew} /> */}
-                                <Button label="Eliminar" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedClientes || !selectedClientes.length} />
-                            </div>
+                            !isViewOnly ? (
+                                <div className="my-2">
+                                    <Button label="Eliminar" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedClientes || !selectedClientes.length} />
+                                </div>
+                            ) : null
                         }
                     />
 
