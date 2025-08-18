@@ -62,7 +62,7 @@ const FormLayoutDemo = () => {
     };
 
     return (
-        <div className="grid">
+        <div className="grid" style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
             <Toast ref={toast} />
             <div className="col-12 md:col-6">
                 <div className="card p-fluid">
