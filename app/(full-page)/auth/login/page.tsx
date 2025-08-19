@@ -24,7 +24,7 @@ const LoginPage = () => {
         setLoading(true);
         if (toast.current) toast.current.clear();
         try {
-            const response = await fetch('http://127.0.0.1/microservice-entity/public/auth/login', {
+            const response = await fetch('http://192.168.250.10/microservice-entity/public/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

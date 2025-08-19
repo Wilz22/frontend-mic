@@ -19,7 +19,7 @@ type Cliente = {
     telefono: string;
 };
 
-const API_BASE = 'http://127.0.0.1/microservice-entity/public/api/clientes';
+const API_BASE = 'http://192.168.250.10/microservice-entity/public/api/clientes';
 
 async function apiList(): Promise<Cliente[]> {
     const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
