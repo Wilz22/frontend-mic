@@ -35,6 +35,7 @@ async function apiList(): Promise<Cliente[]> {
 }
 
 const Crud = () => {
+    const userEmail = typeof window !== 'undefined' ? localStorage.getItem('user_email') : '';
     const emptyCliente: Cliente = { cliente_id: 0, nombre_completo: '', direccion: '', email: '', telefono: '' };
     const [clientes, setClientes] = useState<Cliente[]>([]);
     const [clienteDialog, setClienteDialog] = useState(false);
@@ -46,10 +47,6 @@ const Crud = () => {
     const [globalFilter, setGlobalFilter] = useState('');
     const toast = useRef<Toast>(null);
     const dt = useRef(null);
-
-    const userEmail = typeof window !== 'undefined' ? localStorage.getItem('user_email') ?? '' : '';
-    const viewOnlyEmails = ['admin@app.com', 'dev@app.com', 'supervisor@app.com'];
-    const isViewOnly = viewOnlyEmails.includes(userEmail);
 
     useEffect(() => {
         (async () => {
@@ -215,8 +212,12 @@ const Crud = () => {
     );
     const actionBodyTemplate = (rowData: Cliente) => (
         <>
-            <Button icon="pi pi-pencil" rounded severity="success" className="mr-2" onClick={() => editCliente(rowData)} />
-            <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteCliente(rowData)} />
+            {userEmail !== 'supervisor@app.com' && (
+                <>
+                    <Button icon="pi pi-pencil" rounded severity="success" className="mr-2" onClick={() => editCliente(rowData)} />
+                    <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteCliente(rowData)} />
+                </>
+            )}
         </>
     );
 
@@ -245,13 +246,19 @@ const Crud = () => {
                 <div className="card">
                     <Toast ref={toast} />
                     <Toolbar
-                        className="mb-4"
+                        className="mb-4 flex"
+                        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                         left={
-                            !isViewOnly ? (
+                            userEmail === 'supervisor@app.com' ? (
                                 <div className="my-2">
+                                    <span className="p-text-secondary font-bold">Vista Clientes</span>
+                                </div>
+                            ) : (
+                                <div className="my-2">
+                                    {/* <Button label="Nuevo" icon="pi pi-plus" severity="success" className=" mr-2" onClick={openNew} /> */}
                                     <Button label="Eliminar" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedClientes || !selectedClientes.length} />
                                 </div>
-                            ) : null
+                            )
                         }
                     />
 

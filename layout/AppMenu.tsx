@@ -10,47 +10,52 @@ import { AppMenuItem } from '@/types';
 const AppMenu = () => {
     const { layoutConfig } = useContext(LayoutContext);
 
-    const userEmail = typeof window !== 'undefined' ? localStorage.getItem('user_email') ?? '' : '';
-    const viewOnlyEmails = ['admin@app.com', 'dev@app.com', 'supervisor@app.com'];
+    let userEmail = '';
+    if (typeof window !== 'undefined') {
+        userEmail = localStorage.getItem('user_email') || '';
+    }
 
-    const model: AppMenuItem[] = viewOnlyEmails.includes(userEmail)
-        ? [
-              {
-                  label: 'Menú',
-                  icon: 'pi pi-fw pi-briefcase',
-                  to: '/pages',
-                  items: [
-                      {
-                          label: 'Clientes',
-                          icon: 'pi pi-fw pi-pencil',
-                          to: '/main/pages/crud'
-                      }
-                  ]
-              }
-          ]
-        : [
-              {
-                  label: 'Home',
-                  items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/main' }]
-              },
-              {
-                  label: 'Menú',
-                  icon: 'pi pi-fw pi-briefcase',
-                  to: '/pages',
-                  items: [
-                      {
-                          label: 'Ingreso Clientes',
-                          icon: 'pi pi-fw pi-id-card',
-                          to: '/main/uikit/formlayout'
-                      },
-                      {
-                          label: 'Clientes',
-                          icon: 'pi pi-fw pi-pencil',
-                          to: '/main/pages/crud'
-                      }
-                  ]
-              }
-          ];
+    let model: AppMenuItem[] = [];
+    if (userEmail === 'supervisor@app.com') {
+        model = [
+            {
+                label: 'Menú',
+                icon: 'pi pi-fw pi-briefcase',
+                to: '/pages',
+                items: [
+                    {
+                        label: 'Clientes',
+                        icon: 'pi pi-fw pi-pencil',
+                        to: '/main/pages/crud'
+                    }
+                ]
+            }
+        ];
+    } else {
+        model = [
+            {
+                label: 'Home',
+                items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/main' }]
+            },
+            {
+                label: 'Menú',
+                icon: 'pi pi-fw pi-briefcase',
+                to: '/pages',
+                items: [
+                    {
+                        label: 'Ingreso Clientes',
+                        icon: 'pi pi-fw pi-id-card',
+                        to: '/main/uikit/formlayout'
+                    },
+                    {
+                        label: 'Clientes',
+                        icon: 'pi pi-fw pi-pencil',
+                        to: '/main/pages/crud'
+                    }
+                ]
+            }
+        ];
+    }
 
     return (
         <MenuProvider>
